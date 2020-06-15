@@ -39,7 +39,7 @@ function getName(){
  * Handles response by converting it to text and passing the result to
  * addQuoteToDom().
  */
- 
+
 function handleResponse(response){
     console.log("Handling the response.");
 
@@ -66,7 +66,8 @@ function addNameToDom(name){
 async function getNameUsingAsyncAwait(){
     const response = await fetch('/data');
     const name = await response.text();
-    document.getElementById('name-container').innerText = name;
+    document.getElementById('name-container').innerText = json;
+    console.log(json)
 }
 
 /*

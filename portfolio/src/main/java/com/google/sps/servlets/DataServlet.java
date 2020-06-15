@@ -15,6 +15,7 @@
 package com.google.sps.servlets;
 
 import java.io.IOException;
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
@@ -25,19 +26,54 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
- private List<String> names;
+
+private ArrayList<String> names;
 
   @Override
   public void init() {
-      names = new ArrayList<>();
-      names.add("Hello Kayahma");
+      names = new ArrayList<String>();
+      names.add("RMP");
+      names.add("Love Me More");
+      names.add("6 Kiss");
+      names.add("Abandoned");
+      names.add("Real Feel");
+      names.add("Chosen");
+      names.add("Can you Rap Like Me -Pt.2");
+
       
   }
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-   String name = names.get(0);
-    response.setContentType("text/html;");
-    response.getWriter().println(name);
+      
+  //Convert the strings to JSON
+ String json = convertToJsonUsingGson(names);
+//Send response as JSON
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
     
   }
+ 
+   private String convertToJson(ArrayList<String> names) {
+    String json = "{";
+    json += "\"Trippie Songs 0\": ";
+    json += "\"" + names.get(0) + "\"";
+    json += ", ";
+    json += "\"Trippie Songs 1\": ";
+    json += "\"" + names.get(1) + "\"";
+    json += ", ";
+    json += "\"Trippie Songs 2\": ";
+    json += names.get(2);
+    json += ", ";
+    json += "\"Trippie Songs 3\": ";
+    json += names.get(3);
+    json += "}";
+    return json;
+  }
+  private String convertToJsonUsingGson(ArrayList<String> names) {
+    Gson gson = new Gson();
+    String json = gson.toJson( names);
+    return json;
+  }
+
+    
 }
