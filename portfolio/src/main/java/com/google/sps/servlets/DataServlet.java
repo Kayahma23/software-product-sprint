@@ -28,8 +28,10 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
 private ArrayList<String> names;
-
-  @Override
+int count;
+  //@Override//
+  //Remove this-Hard Coded//
+  
   public void init() {
       names = new ArrayList<String>();
       names.add("RMP");
@@ -39,41 +41,54 @@ private ArrayList<String> names;
       names.add("Real Feel");
       names.add("Chosen");
       names.add("Can you Rap Like Me -Pt.2");
-
-      
   }
-  @Override
+
+ private String getParameter(HttpServletRequest request, String name, String defaultValue){
+      String value = request.getParameter(name);
+      if (value == null){
+          return defaultValue;
+      }
+      return value;
+  }
+
+  public void doPost(HttpServletRequest request, HttpServletResponse response ) throws IOException{
+    //Get input from form
+
+    String text = getParameter(request,"text-input","");
+
+    names.add("Enter A Comment:" + text);
+
+    count++;
+
+    System.out.println(text);
+
+//requestContent(names);//
+
+    response.sendRedirect("index.html");
+  }
+
+    @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      
-  //Convert the strings to JSON
- String json = convertToJsonUsingGson(names);
+
 //Send response as JSON
-    response.setContentType("application/json;");
+    response.setContentType("application/json");
+    //names.add("howdy");
+//Convert the strings to JSON
+    String json = convertToJsonUsingGson(names,count);
+//Send response as JSON
     response.getWriter().println(json);
     
   }
- 
-   private String convertToJson(ArrayList<String> names) {
-    String json = "{";
-    json += "\"Trippie Songs 0\": ";
-    json += "\"" + names.get(0) + "\"";
-    json += ", ";
-    json += "\"Trippie Songs 1\": ";
-    json += "\"" + names.get(1) + "\"";
-    json += ", ";
-    json += "\"Trippie Songs 2\": ";
-    json += names.get(2);
-    json += ", ";
-    json += "\"Trippie Songs 3\": ";
-    json += names.get(3);
-    json += "}";
-    return json;
-  }
-  private String convertToJsonUsingGson(ArrayList<String> names) {
-    Gson gson = new Gson();
-    String json = gson.toJson( names);
-    return json;
-  }
 
+  private String convertToJsonUsingGson(ArrayList<String> names,int size) {
+      String json= "{";
+      if(size==0){
+      json += "\"Comment\" :";
+      json += "\"" + names.get(0) + "\"";
+      json += "}";
+    
+  }
+ return json;
+  }
     
 }
