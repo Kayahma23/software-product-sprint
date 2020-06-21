@@ -7,3 +7,97 @@
 #greeting-container {
   margin-top: 20px;
 }
+
+.kay{ 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    height: auto;
+}
+img {
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+.pics {
+  display: flex;
+  padding-top: 40px;
+}
+
+.beans{
+    display: flex;
+  padding-top: 40px;
+}
+
+.img1{
+    /*1.3344*/
+    flex: .7;
+    
+}
+
+ .img3{
+     /*0.7505*/
+     flex:0.40;
+     
+     } 
+
+
+.img5{
+    /*0.75*/
+    flex: 0.65; 
+}
+
+.img7{
+    flex:0.7505;
+}
+
+.img9{
+    flex:1.3344;
+}
+
+.img11{
+    flex:0.75;
+}
+
+.link {
+  background-color: white;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+
+ display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.git {
+  background-color: white;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+
+ 
+;
+}
+
+
+
+
