@@ -13,7 +13,12 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
-
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import java.io.IOException;
 import com.google.gson.Gson;
 import java.util.ArrayList;
@@ -23,72 +28,69 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-private ArrayList<String> names;
-int count;
-  //@Override//
-  //Remove this-Hard Coded//
-  
-  public void init() {
-      names = new ArrayList<String>();
-      names.add("RMP");
-      names.add("Love Me More");
-      names.add("6 Kiss");
-      names.add("Abandoned");
-      names.add("Real Feel");
-      names.add("Chosen");
-      names.add("Can you Rap Like Me -Pt.2");
+@Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    String text = request.getParameter("text-input");
+    String fname = request.getParameter("fname");
+    String lname = request.getParameter("lname");
+    String dropdown = request.getParameter("dropdown");
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity messageEntity = new Entity("Message");
+    messageEntity.setProperty("text", text);
+    messageEntity.setProperty("lname", lname);
+    messageEntity.setProperty("fname", fname);
+    messageEntity.setProperty("dropdown", dropdown);
+    messageEntity.setProperty("timestamp", System.currentTimeMillis());
+    datastore.put(messageEntity);
+
+    response.sendRedirect("/data");
+    response.sendRedirect("/index.html");
   }
 
- private String getParameter(HttpServletRequest request, String name, String defaultValue){
-      String value = request.getParameter(name);
-      if (value == null){
-          return defaultValue;
-      }
-      return value;
-  }
-
-  public void doPost(HttpServletRequest request, HttpServletResponse response ) throws IOException{
-    //Get input from form
-
-    String text = getParameter(request,"text-input","");
-
-    names.add("Enter A Comment:" + text);
-
-    count++;
-
-    System.out.println(text);
-
-//requestContent(names);//
-
-    response.sendRedirect("index.html");
-  }
-
-    @Override
+  @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-//Send response as JSON
-    response.setContentType("application/json");
-    //names.add("howdy");
-//Convert the strings to JSON
-    String json = convertToJsonUsingGson(names,count);
-//Send response as JSON
-    response.getWriter().println(json);
-    
-  }
+     response.setContentType("application/json;");
+     
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = new Query("Message").addSort("timestamp", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+    ArrayList<String> comment = new ArrayList<String>();
+    for (Entity entity : results.asIterable()) {
+      String message = (String) entity.getProperty("text");
+      response.getOutputStream().println(message);
+    }
+   
+    String json = new Gson().toJson(comment);
 
-  private String convertToJsonUsingGson(ArrayList<String> names,int size) {
-      String json= "{";
-      if(size==0){
-      json += "\"Comment\" :";
-      json += "\"" + names.get(0) + "\"";
-      json += "}";
-    
-  }
- return json;
-  }
-    
+  } 
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
+
+      // Get the message entered by the user.
+      String message = request.getParameter("message");
+
+      // Get the URL of the image that the user uploaded to Blobstore.
+      String imageUrl = getUploadedFileUrl(request, "image");
+
+      // Output some HTML that shows the data the user enter entered.
+      // A real codebase would probably store these in Datastore.
+      PrintWriter out = response.getWriter();
+      out.println("<p>Here's the image you uploaded:</p>");
+      out.println("<a href=\"" + imageUrl + "\">");
+      out.println("<img src=\"" + imageUrl + "\"/>");
+      out.println("</a>");
+      out.println("<p>Here's the text you entered:</p>");
+      out.println(message);
+
+
+  })
 }
+
+

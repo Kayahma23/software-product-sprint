@@ -26,79 +26,20 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
-/*
-function getName(){
-    console.log("Fetching name!!");
-     // The fetch() function returns a Promise because the request is asynchronous.
-    const responsePromise = fetch ('/data');
-    // When the request is complete, pass the response into handleResponse().
-    responsePromise.then(handleResponse);
-}
-*/
-/**
- * Handles response by converting it to text and passing the result to
- * addQuoteToDom().
- */
-/*
-function handleResponse(response){
-    console.log("Handling the response.");
 
-    // response.text() returns a Promise, because the response is a stream of
-  // content and not a simple variable.
-  //Removed fetch('/data') - could be the error
-    const textPromise = response.text();
-
- // When the response is converted to text, pass the result into the
-  // addQuoteToDom() function.
-    textPromise.then(addNameToDom);
-}
-*/
-
-/** Adds name to the DOM. */
-/*
-function addNameToDom(name){
-    console.log('Adding name to dom ' + name);
-    
-    const nameContainer = document.getElementById('name-container');
-    nameContainer.innerText = name;
-}
-*/
-/*
-async function getNameUsingAsyncAwait(){
-    const response = await fetch('/data');
-    const name = await response.text();
-    document.getElementById('name-container').innerText = json;
-    console.log(json)
-}
-*/
-/*
-function requestContent(){
-    fetch('/data').then(response => response.json()).then((someTexts )=> {
-        const statsListElement = document.getElementById('body');
-        statsListElement.innerHTML = someTexts;
-
-        //Build the list of history entries.
-        const historyEl = document.getElementById('history');
-        someTexts.forEach((line)=>{
-            historyEl.appendChild(createListElement(line));
-        });
-    });
-}
-*/
 function collectData(text){
-    fetch('/data').then(response => response.json()).then((comments)=>{
-        const textComments = document.getElementById('data-container');
-        textComments.innerHtml = '';
-        textComments.appendChild(
-            createListElement('Comments:' + comments.Comment));
-
+    fetch('/data').then(resposnse => response.text()).then((comment) => {
+        document.getElementById('data-contianer').innerText = comment;
     });
 }
 
-/*
-function getNameUsingArrowFunctions() {
-  fetch('/data').then(response => response.text()).then((name) => {
-    document.getElementById('name-container').innerText = name;
-  });
+function fetchBlobstoreUrlAndShowForm() {
+    fetch('/data').then((response) => { 
+        return response.text();
+    })
+    .then((imageUploadUrl)=>{
+        const messageForm = document.getElementById('my-form');
+        messageForm.action = imageUploadUrl;
+        messageForm.classList.remove('hidden');
+    });
 }
-*/
