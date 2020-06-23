@@ -94,6 +94,9 @@ img {
     cursor: pointer;
 }
 
-
+ /* Form is hidden by default. */
+    .hidden {
+        display: none;
+    }
 
 

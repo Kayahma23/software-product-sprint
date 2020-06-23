@@ -70,27 +70,7 @@ public class DataServlet extends HttpServlet {
 
   } 
 
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
-
-      // Get the message entered by the user.
-      String message = request.getParameter("message");
-
-      // Get the URL of the image that the user uploaded to Blobstore.
-      String imageUrl = getUploadedFileUrl(request, "image");
-
-      // Output some HTML that shows the data the user enter entered.
-      // A real codebase would probably store these in Datastore.
-      PrintWriter out = response.getWriter();
-      out.println("<p>Here's the image you uploaded:</p>");
-      out.println("<a href=\"" + imageUrl + "\">");
-      out.println("<img src=\"" + imageUrl + "\"/>");
-      out.println("</a>");
-      out.println("<p>Here's the text you entered:</p>");
-      out.println(message);
-
-
-  })
+  
 }
 
 
